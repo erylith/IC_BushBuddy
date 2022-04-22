@@ -87,7 +87,13 @@ if ( g_BushSettings.bushDelay == "" )
 Gui, ICScriptHub:Add, Text, x15 y+15, Cooldown (game seconds) to keep in E formation:
 Gui, ICScriptHub:Add, Edit, vBushDelay y+5 w50, % g_BushSettings.bushDelay
 Gui, ICScriptHub:Add, Text, y+5 vBushDelaySaved w250, % "Saved: " . g_BushSettings.bushDelay
-    
+
+if ( g_BushSettings.knockbackDelay == "" )
+    g_BushSettings.knockbackDelay := 60
+Gui, ICScriptHub:Add, Text, x15 y+15, Cooldown (game seconds) to keep in W formation:
+Gui, ICScriptHub:Add, Edit, vKnockbackDelay y+5 w50, % g_BushSettings.knockbackDelay
+Gui, ICScriptHub:Add, Text, y+5 vKnockBackDelaySaved w250, % "Saved: " . g_BushSettings.knockbackDelay
+
 Gui, ICScriptHub:Add, Button, x15 y+15 gBush_Save_Clicked, Save
 Gui, ICScriptHub:Add, Button, x15 y+15 w50 gBush_Run_Clicked, Start
 Gui, ICScriptHub:Add, Button, x15 y+5 w50 gBush_Stop_Clicked, Stop
@@ -97,7 +103,7 @@ Gui, ICScriptHub:Add, Button, x15 y+5 w50 gBush_Stop_Clicked, Stop
 
 Test_Clicked()
 {
-    useUltimates()
+    useUltimates(1)
 }
 
 Bush_Save_Clicked()
@@ -106,6 +112,7 @@ Bush_Save_Clicked()
     Gui, ICScriptHub:Submit, NoHide
     g_BushSettings.MaxMonsters := BushMaxMonsters
     g_BushSettings.bushDelay := BushDelay
+    g_BushSettings.knockbackDelay := KnockbackDelay
     loop, 10
     {
         g_BushSettings.Ult[A_Index] := Ult_CB%A_Index%

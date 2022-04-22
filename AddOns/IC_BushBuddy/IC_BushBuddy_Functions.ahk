@@ -33,16 +33,33 @@ Bush_Run()
         GuiControl, ICScriptHub:, BushDelaySaved, % cooldown > 0 ? "Cooldown left: " . cooldown:"Cooldown left: " . "Ready"
 ;, % BushDelay < 1 ? bushDelay:"Waiting for monsters to die..."
         GuiControl, ICScriptHub:, BushMonsters, Monsters in area: %activeMonsters%
-        GuiControl, ICScriptHub:, BushFormation, % famFormation == 1 ? "Formation in use: familiars on field":"Formation in use: no familiars on field"
+        if(famFormation == 0)
+        {
+            GuiControl, ICScriptHub:, BushFormation, % "No Familiars on field"
+        }
+        else if(famFormation == 1)
+        {   
+            GuiControl, ICScriptHub:, BushFormation, % "Familiars on field"
+        }
+        else if(famFormation == 2)
+        {
+            GuiControl, ICScriptHub:, BushFormation, % "Knockback without spawning"
+        }
+        ;GuiControl, ICScriptHub:, BushFormation, % famFormation == 1 ? "Formation in use: familiars on field":"Formation in use: no familiars on field"
 
         if ( activeMonsters > g_BushSettings.MaxMonsters )
             {
             if ( famFormation == 0 )
                 {
-                    useUltimates()
+                    useUltimates(currentTime)
                 }
-
-            else if (famFormation == 1) ;set to E formation
+            else if (famFormation == 1) ; set to W formation
+                {
+                    g_SF.DirectedInput(,, "{w}")
+                    startTime := A_TickCount
+                    famFormation = 2
+                }
+            else if (famFormation == 2 AND currentTime > g_BushSettings.knockbackDelay) ;set to E formation
                 {
                     famFormation = 0
                     g_SF.DirectedInput(,, "{e}" )                
@@ -65,7 +82,7 @@ Bush_Run()
 return
 }
 
-useUltimates()
+useUltimates(currentTime)
 {
     timeScale := g_SF.Memory.ReadTimeScaleMultiplier()
   ; GuiControl, ICScriptHub:, TestTXT, % currentTime
