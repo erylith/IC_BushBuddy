@@ -14,7 +14,6 @@ Bush_Run()
     BushInitialize()
     famFormation := 0
     BushZone := g_SF.Memory.ReadCurrentZone()
-    activeMonstersListSize := New g_SF.Memory.GameManager.GameObjectStructure(g_SF.Memory.GameManager.Game.GameInstance.Controller.Area,, [0x1C, 0xC]) ; push - activeMonsters, _size
     startTime := A_TickCount - g_BushSettings.bushDelay * 1000
     g_SF.DirectedInput(,, "{e}" )
     loop, 10
@@ -98,6 +97,6 @@ useUltimates(currentTime)
 
 ReadActiveMonsters()
 {
-  return g_SF.Memory.GenericGetValue(g_SF.Memory.GameManager.Game.GameInstance.Controller.Area.activeMonstersListSize)
+    return g_SF.Memory.ReadActiveMonstersCount()
 
 }
